@@ -1,103 +1,177 @@
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Mock featured products
+  const featuredProducts = [
+    {
+      id: '1',
+      name: 'Wireless Headphones',
+      price: 99.99,
+      image: '/images/product-1.jpg',
+      category: 'Electronics',
+    },
+    {
+      id: '2',
+      name: 'Smart Watch',
+      price: 149.99,
+      image: '/images/product-2.jpg',
+      category: 'Electronics',
+    },
+    {
+      id: '3',
+      name: 'Leather Backpack',
+      price: 79.99,
+      image: '/images/product-3.jpg',
+      category: 'Accessories',
+    },
+    {
+      id: '4',
+      name: 'Bluetooth Speaker',
+      price: 59.99,
+      image: '/images/product-4.jpg',
+      category: 'Electronics',
+    },
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div>
+      {/* Hero Section */}
+      <section className="relative bg-gray-900 text-white">
+        <div className="container mx-auto px-4 py-32">
+          <div className="max-w-xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Discover Quality Products for Every Need
+            </h1>
+            <p className="text-xl mb-8">
+              Shop our wide selection of premium products at competitive prices. 
+              From electronics to home goods, we have everything you need.
+            </p>
+            <Link 
+              href="/products" 
+              className="bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-md transition-colors inline-block"
+            >
+              Shop Now
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">Featured Products</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredProducts.map((product) => (
+              <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-64 w-full">
+                  {/* Replace with actual images when available */}
+                  <div className="bg-gray-200 w-full h-full flex items-center justify-center">
+                    <span className="text-gray-500">Product Image</span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <span className="text-sm text-gray-500">{product.category}</span>
+                  <h3 className="text-lg font-medium mt-1">{product.name}</h3>
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="font-bold">Ksh{product.price.toFixed(2)}</span>
+                    <button className="bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary-dark transition-colors">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <Link 
+              href="/products" 
+              className="border border-primary text-primary hover:bg-primary hover:text-white font-medium px-6 py-3 rounded-md transition-colors inline-block"
+            >
+              View All Products
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="relative h-48 bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Electronics Image</span>
+              </div>
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-medium mb-2">Electronics</h3>
+                <Link 
+                  href="/products/category/electronics" 
+                  className="text-primary hover:underline"
+                >
+                  Shop Now
+                </Link>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="relative h-48 bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Clothing Image</span>
+              </div>
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-medium mb-2">Clothing</h3>
+                <Link 
+                  href="/products/category/clothing" 
+                  className="text-primary hover:underline"
+                >
+                  Shop Now
+                </Link>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="relative h-48 bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Home Goods Image</span>
+              </div>
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-medium mb-2">Home</h3>
+                <Link 
+                  href="/products/category/home" 
+                  className="text-primary hover:underline"
+                >
+                  Shop Now
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-16 bg-primary text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Join Our Newsletter</h2>
+          <p className="max-w-lg mx-auto mb-8">
+            Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
+          </p>
+          <form className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Your email address"
+              className="px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-white flex-grow text-gray-900"
+            />
+            <button
+              type="submit"
+              className="bg-white text-primary hover:bg-gray-100 font-medium px-6 py-3 rounded-md transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
