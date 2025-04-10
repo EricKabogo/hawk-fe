@@ -97,11 +97,11 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Your email address"
-                className="px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-gray-800 text-white"
+                className="px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f766e] bg-gray-800 text-white"
               />
               <button
                 type="submit"
-                className="bg-primary hover:bg-primary-dark text-white font-medium px-4 py-2 rounded-md transition-colors"
+                className="bg-[#0f766e] hover:bg-primary-dark text-white font-medium px-4 py-2 rounded-md transition-colors"
               >
                 Subscribe
               </button>

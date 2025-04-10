@@ -60,7 +60,7 @@ export default function ProductPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f766e]"></div>
       </div>
     );
   }
@@ -75,17 +75,17 @@ export default function ProductPage() {
       <nav className="mb-6">
         <ol className="flex items-center space-x-2 text-sm">
           <li>
-            <Link href="/" className="text-gray-500 hover:text-primary">Home</Link>
+            <Link href="/" className="text-gray-500 hover:text-[#0f766e]">Home</Link>
           </li>
           <li className="text-gray-500">/</li>
           <li>
-            <Link href="/products" className="text-gray-500 hover:text-primary">Products</Link>
+            <Link href="/products" className="text-gray-500 hover:text-[#0f766e]">Products</Link>
           </li>
           <li className="text-gray-500">/</li>
           <li>
             <Link 
               href={`/products?category=${encodeURIComponent(product.category)}`} 
-              className="text-gray-500 hover:text-primary"
+              className="text-gray-500 hover:text-[#0f766e]"
             >
               {product.category}
             </Link>
@@ -108,7 +108,7 @@ export default function ProductPage() {
               {product.images.map((image, index) => (
                 <button 
                   key={index} 
-                  className="aspect-square bg-gray-100 rounded-md flex items-center justify-center hover:ring-2 hover:ring-primary"
+                  className="aspect-square bg-gray-100 rounded-md flex items-center justify-center hover:ring-2 hover:ring-[#0f766e]"
                 >
                   <span className="text-xs text-gray-500">Image {index + 1}</span>
                 </button>
@@ -169,7 +169,7 @@ export default function ProductPage() {
                     key={variant.id}
                     className={`px-3 py-1 border rounded-md text-sm ${
                       variant.inStock
-                        ? 'hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary'
+                        ? 'hover:border-[#0f766e] focus:outline-none focus:ring-2 focus:ring-[#0f766e]'
                         : 'opacity-50 cursor-not-allowed'
                     }`}
                     disabled={!variant.inStock}
@@ -231,7 +231,7 @@ export default function ProductPage() {
             <button 
               className={`px-6 py-3 ${
                 activeTab === 'description' 
-                  ? 'border-b-2 border-primary font-medium text-primary' 
+                  ? 'border-b-2 border-[#0f766e] font-medium text-[#0f766e]' 
                   : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setActiveTab('description')}
@@ -241,7 +241,7 @@ export default function ProductPage() {
             <button 
               className={`px-6 py-3 ${
                 activeTab === 'specifications' 
-                  ? 'border-b-2 border-primary font-medium text-primary' 
+                  ? 'border-b-2 border-[#0f766e] font-medium text-[#0f766e]' 
                   : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setActiveTab('specifications')}
@@ -251,7 +251,7 @@ export default function ProductPage() {
             <button 
               className={`px-6 py-3 ${
                 activeTab === 'reviews' 
-                  ? 'border-b-2 border-primary font-medium text-primary' 
+                  ? 'border-b-2 border-[#0f766e] font-medium text-[#0f766e]' 
                   : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setActiveTab('reviews')}

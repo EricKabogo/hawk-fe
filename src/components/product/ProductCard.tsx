@@ -82,7 +82,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         
         {/* Product name */}
         <Link href={`/products/${product.id}`} className="block">
-          <h3 className="text-lg font-medium mt-1 hover:text-primary transition-colors">
+          <h3 className="text-lg font-medium mt-1 hover:text-[#0f766e] transition-colors">
             {product.name}
           </h3>
         </Link>

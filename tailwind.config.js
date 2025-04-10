@@ -9,12 +9,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: "#0f766e", // Teal shade
-        },
-        secondary: {
-          DEFAULT: "#f97316", // Orange shade
-        },
+        primary: "#0f766e", // Teal shade
+        secondary: "#f97316", // Orange shade
         accent: "#d1d5db", // Gray shade
       },
     },

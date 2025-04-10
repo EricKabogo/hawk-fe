@@ -12,22 +12,22 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="font-bold text-2xl text-primary">
+          <Link href="/" className="font-bold text-2xl text-[#0f766e]">
             Hawk Life Solutions
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/products" className="hover:text-primary transition-colors">
+            <Link href="/products" className="hover:text-[#0f766e] transition-colors">
               All Products
             </Link>
-            <Link href="/products/category/electronics" className="hover:text-primary transition-colors">
+            <Link href="/products/category/electronics" className="hover:text-[#0f766e] transition-colors">
               Electronics
             </Link>
-            <Link href="/products/category/clothing" className="hover:text-primary transition-colors">
+            <Link href="/products/category/clothing" className="hover:text-[#0f766e] transition-colors">
               Clothing
             </Link>
-            <Link href="/products/category/home" className="hover:text-primary transition-colors">
+            <Link href="/products/category/home" className="hover:text-[#0f766e] transition-colors">
               Home
             </Link>
           </nav>
@@ -35,13 +35,13 @@ const Header = () => {
           {/* Search, Cart and Account */}
           <div className="hidden md:flex items-center space-x-6">
             <ProductSearch />
-            <Link href="/cart" className="hover:text-primary transition-colors relative">
+            <Link href="/cart" className="hover:text-[#0f766e] transition-colors relative">
               <ShoppingCart size={20} />
-              <span className="absolute -top-2 -right-2 bg-secondary text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-[#f9731] text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 0
               </span>
             </Link>
-            <Link href="/account" className="hover:text-primary transition-colors">
+            <Link href="/account" className="hover:text-[#0f766e] transition-colors">
               <User size={20} />
             </Link>
           </div>
@@ -59,26 +59,26 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4">
             <nav className="flex flex-col space-y-4">
-              <Link href="/products" className="hover:text-primary transition-colors">
+              <Link href="/products" className="hover:text-[#0f766e] transition-colors">
                 All Products
               </Link>
-              <Link href="/products/category/electronics" className="hover:text-primary transition-colors">
+              <Link href="/products/category/electronics" className="hover:text-[#0f766e] transition-colors">
                 Electronics
               </Link>
-              <Link href="/products/category/clothing" className="hover:text-primary transition-colors">
+              <Link href="/products/category/clothing" className="hover:text-[#0f766e] transition-colors">
                 Clothing
               </Link>
-              <Link href="/products/category/home" className="hover:text-primary transition-colors">
+              <Link href="/products/category/home" className="hover:text-[#0f766e] transition-colors">
                 Home
               </Link>
               <div className="flex space-x-6 pt-4 border-t">
-                <Link href="/cart" className="hover:text-primary transition-colors relative">
+                <Link href="/cart" className="hover:text-[#0f766e] transition-colors relative">
                   <ShoppingCart size={20} />
-                  <span className="absolute -top-2 -right-2 bg-secondary text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-[#f9731] text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                     0
                   </span>
                 </Link>
-                <Link href="/account" className="hover:text-primary transition-colors">
+                <Link href="/account" className="hover:text-[#0f766e] transition-colors">
                   <User size={20} />
                 </Link>
               </div>
