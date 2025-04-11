@@ -1,12 +1,14 @@
+// src/components/product/ProductCard.tsx
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/cart-context';
+import { useToast } from '@/context/toast-context';
 import { Product } from '@/types/product';
 import { formatPrice } from '@/lib/utils';
-import Button from '../ui/Button';
+import Button from '@/components/ui/Button';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 interface ProductCardProps {
   product: Product;
@@ -14,11 +16,12 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addItem } = useCart();
-  const [isHovered, setIsHovered] = useState(false);
+  const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddToCart = () => {
     setIsLoading(true);
+    
     // Add a small delay to simulate processing
     setTimeout(() => {
       addItem({
@@ -28,33 +31,27 @@ const ProductCard = ({ product }: ProductCardProps) => {
         quantity: 1,
         image: product.thumbnail,
       });
+      
       setIsLoading(false);
+      showToast(`${product.name} added to cart`, 'success');
     }, 300);
   };
 
   return (
-    <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Link href={`/products/${product.id}`} className="block relative">
-        <div className="relative h-64 w-full overflow-hidden">
-          {/* Placeholder while we don't have real images */}
-          <div className="bg-gray-200 w-full h-full flex items-center justify-center">
-            <span className="text-gray-500">Product Image</span>
-          </div>
-          
-          {/* When we have real images, use this instead */}
-          {/* <Image
-            src={product.thumbnail}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg h-full flex flex-col">
+      <Link 
+        href={`/products/${product.id}`} 
+        className="block relative flex-shrink-0"
+        aria-label={`View ${product.name} details`}
+      >
+        <div className="h-64 w-full overflow-hidden">
+          <OptimizedImage
+            src={product.thumbnail || '/images/placeholder.jpg'}
             alt={product.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className={`object-cover transition-transform duration-500 ${
-              isHovered ? 'scale-110' : 'scale-100'
-            }`}
-          /> */}
+            width={400}
+            height={300}
+            className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+          />
           
           {/* Sale badge */}
           {product.compareAtPrice && product.compareAtPrice > product.price && (
@@ -74,15 +71,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       </Link>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         {/* Category */}
         <span className="text-xs text-gray-500 uppercase tracking-wider">
           {product.category}
         </span>
         
         {/* Product name */}
-        <Link href={`/products/${product.id}`} className="block">
-          <h3 className="text-lg font-medium mt-1 hover:text-[#0f766e] transition-colors">
+        <Link href={`/products/${product.id}`} className="block mt-1 flex-grow">
+          <h3 className="text-lg font-medium hover:text-[#0f766e] transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -104,10 +101,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="mt-4">
           <Button 
             onClick={handleAddToCart}
-            disabled={!product.inStock}
+            disabled={!product.inStock || isLoading}
             isLoading={isLoading}
             className="w-full"
             size="sm"
+            aria-label={product.inStock ? `Add ${product.name} to cart` : 'Out of stock'}
           >
             {product.inStock ? 'Add to Cart' : 'Out of Stock'}
           </Button>

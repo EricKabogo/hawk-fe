@@ -6,6 +6,7 @@ import { AuthProvider } from '@/context/auth-context';
 import { CartProvider } from '@/context/cart-context';
 import { ToastProvider } from '@/context/toast-context';
 import RootLayout from '@/components/layout/RootLayout';
+import PerformanceMonitor from '@/components/common/PerformanceMonitor';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function Layout({
           <CartProvider>
             <ToastProvider>
               <RootLayout>{children}</RootLayout>
+              <PerformanceMonitor />
             </ToastProvider>
           </CartProvider>
         </AuthProvider>
