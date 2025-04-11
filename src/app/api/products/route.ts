@@ -8,21 +8,52 @@ export async function GET(request: Request) {
   const search = searchParams.get('search');
   const sort = searchParams.get('sort');
   
+  // Get price range filters
+  const priceMin = searchParams.get('priceMin') ? parseFloat(searchParams.get('priceMin')!) : null;
+  const priceMax = searchParams.get('priceMax') ? parseFloat(searchParams.get('priceMax')!) : null;
+  
+  // Get availability filters
+  const inStock = searchParams.get('inStock') === 'true';
+  const onSale = searchParams.get('onSale') === 'true';
+  
   // Filter products based on query parameters
   let filteredProducts = [...mockProducts];
   
+  // Filter by category
   if (category) {
     filteredProducts = filteredProducts.filter(
       product => product.category.toLowerCase() === category.toLowerCase()
     );
   }
   
+  // Filter by search term
   if (search) {
     const searchLower = search.toLowerCase();
     filteredProducts = filteredProducts.filter(
       product => 
         product.name.toLowerCase().includes(searchLower) ||
         product.description.toLowerCase().includes(searchLower)
+    );
+  }
+  
+  // Filter by price range
+  if (priceMin !== null) {
+    filteredProducts = filteredProducts.filter(product => product.price >= priceMin);
+  }
+  
+  if (priceMax !== null) {
+    filteredProducts = filteredProducts.filter(product => product.price <= priceMax);
+  }
+  
+  // Filter by availability
+  if (inStock) {
+    filteredProducts = filteredProducts.filter(product => product.inStock);
+  }
+  
+  // Filter by sale status
+  if (onSale) {
+    filteredProducts = filteredProducts.filter(
+      product => product.compareAtPrice && product.compareAtPrice > product.price
     );
   }
   

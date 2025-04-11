@@ -4,20 +4,50 @@ import { useState } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useProduct } from '@/hooks/useProduct';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/context/cart-context';
 import { formatPrice } from '@/lib/utils';
 import ProductGrid from '@/components/product/ProductGrid';
 import Button from '@/components/ui/Button';
+import ProductRecommendations from '@/components/product/ProductRecommendations';
+import { Product } from '@/types/product';
+import { mockProducts } from '@/mock/products';
 
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
-  const { product, isLoading, error } = useProduct(params.id as string);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const { addItem } = useCart();
+  
+  // Instead of using the non-existent useProduct hook, let's use mockProducts directly
+  const [isLoading, setIsLoading] = useState(true);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  
+  // Load product data on component mount
+  useState(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        const foundProduct = mockProducts.find(p => p.id === params.id);
+        if (foundProduct) {
+          setProduct(foundProduct);
+        } else {
+          throw new Error('Product not found');
+        }
+      } catch (error) {
+        setError(error instanceof Error ? error : new Error('An unknown error occurred'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProduct();
+  });
   
   // Fetch related products
   const { products: relatedProducts } = useProducts({
@@ -105,7 +135,7 @@ export default function ProductPage() {
           {/* Thumbnail Gallery */}
           {product.images.length > 1 && (
             <div className="grid grid-cols-4 gap-4">
-              {product.images.map((image, index) => (
+              {product.images.map((image: string, index: number) => (
                 <button 
                   key={index} 
                   className="aspect-square bg-gray-100 rounded-md flex items-center justify-center hover:ring-2 hover:ring-[#0f766e]"
@@ -164,7 +194,7 @@ export default function ProductPage() {
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-2">Colors</h3>
               <div className="flex space-x-3">
-                {product.variants.map((variant) => (
+                {product.variants.map((variant: any) => (
                   <button
                     key={variant.id}
                     className={`px-3 py-1 border rounded-md text-sm ${
@@ -273,7 +303,7 @@ export default function ProductPage() {
               </p>
               <p>
                 Sed euismod, nisl nec ultricies lacinia, nisl nisl aliquam nisl, nec 
-                ultricies nisl nisl nec nisl. Sed euismod, nisl nec ultricies lacinia, 
+                ultricies nisl nisl nec nisl. Sed euismod, nec ultricies lacinia, 
                 nisl nisl aliquam nisl, nec ultricies nisl nisl nec nisl.
               </p>
             </div>
@@ -291,7 +321,7 @@ export default function ProductPage() {
                           {key.charAt(0).toUpperCase() + key.slice(1)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {value}
+                          {String(value)}
                         </td>
                       </tr>
                     ))}
@@ -335,6 +365,16 @@ export default function ProductPage() {
           <ProductGrid products={filteredRelatedProducts} />
         </div>
       )}
+
+      {/* Recently Viewed Products */}
+      <div className="border-t pt-12 mt-12">
+        <ProductRecommendations 
+          title="Recently Viewed" 
+          type="recently-viewed" 
+          currentProductId={product.id}
+          limit={4}
+        />
+      </div>
     </div>
   );
 }

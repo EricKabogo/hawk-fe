@@ -13,6 +13,10 @@ type FetchProductsParams = {
   category?: string;
   search?: string;
   sort?: 'newest' | 'price-low' | 'price-high' | 'name';
+  priceMin?: number | null;
+  priceMax?: number | null;
+  inStock?: boolean;
+  onSale?: boolean;
 };
 
 export function useProducts(initialParams?: FetchProductsParams) {
