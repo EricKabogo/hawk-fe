@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Sliders, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import { formatPrice } from '@/lib/utils';
 
 // Mock categories for filter options
 const categories = [
@@ -135,20 +134,6 @@ export default function SearchFilters({
   
   // Check if any filters are active
   const hasActiveFilters = selectedCategory || selectedPriceRange || inStock || onSale;
-
-  // Calculate current price range display
-  const getCurrentPriceRangeDisplay = () => {
-    if (!selectedPriceRange) return '';
-    
-    const range = priceRanges.find(range => range.id === selectedPriceRange);
-    if (!range) return '';
-    
-    if (range.max === null) {
-      return `Over ${formatPrice(range.min)}`;
-    }
-    
-    return `${formatPrice(range.min)} - ${formatPrice(range.max)}`;
-  };
 
   return (
     <div className={`${

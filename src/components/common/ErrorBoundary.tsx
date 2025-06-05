@@ -1,4 +1,3 @@
-// src/components/common/ErrorBoundary.tsx
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
@@ -43,7 +42,7 @@ class ErrorBoundary extends Component<Props, State> {
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
             <p className="text-gray-600 mb-6">
-              We're sorry, but there was an error loading this content.
+              We&apos;re sorry, but there was an error loading this content.
             </p>
             <Button onClick={this.resetError}>Try Again</Button>
           </div>

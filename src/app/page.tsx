@@ -1,4 +1,3 @@
-// Update src/app/page.tsx
 import Link from 'next/link';
 import FeaturedCategories from '@/components/home/FeaturedCategories';
 import ProductGrid from '@/components/product/ProductGrid';

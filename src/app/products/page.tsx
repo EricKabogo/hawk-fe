@@ -1,15 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Sliders, ArrowUp, ArrowDown, X } from 'lucide-react';
+import { Sliders, X } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import ProductGrid from '@/components/product/ProductGrid';
 import SearchFilters from '@/components/product/SearchFilters';
 import Button from '@/components/ui/Button';
 
-export default function ProductsPage() {
+// Define the sort type to match what your API expects
+type SortOption = 'newest' | 'price-low' | 'price-high' | 'name';
+
+// Separate component that uses useSearchParams
+function ProductsPageContent() {
   const searchParams = useSearchParams();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   
@@ -20,24 +24,25 @@ export default function ProductsPage() {
   const inStock = searchParams.get('inStock') === 'true';
   const onSale = searchParams.get('sale') === 'true';
   
-  // Get sort parameter with 'newest' as default
-  const sort = searchParams.get('sort') || 'newest';
+  // Get sort parameter with 'newest' as default and ensure it's a valid type
+  const rawSort = searchParams.get('sort') || 'newest';
+  const sort: SortOption = ['newest', 'price-low', 'price-high', 'name'].includes(rawSort) 
+    ? rawSort as SortOption 
+    : 'newest';
   
-  // Convert price range to min/max values
-  const getPriceRange = () => {
+  // Convert price range to min/max values using useMemo to prevent unnecessary recalculations
+  const priceRange = useMemo(() => {
     if (!price) return { min: null, max: null };
     
     const [min, max] = price.split('-').map(val => val ? parseInt(val) : null);
     return { min, max };
-  };
-  
-  const priceRange = getPriceRange();
+  }, [price]);
   
   // Use our custom hook to fetch products
   const { products, isLoading, error, setParams } = useProducts({
     search: query,
     category,
-    sort: sort as any,
+    sort,
     // Additional params for advanced filtering
     priceMin: priceRange.min,
     priceMax: priceRange.max,
@@ -50,13 +55,13 @@ export default function ProductsPage() {
     setParams({
       search: query,
       category,
-      sort: sort as any,
+      sort,
       priceMin: priceRange.min,
       priceMax: priceRange.max,
       inStock,
       onSale,
     });
-  }, [query, category, sort, price, inStock, onSale, setParams]);
+  }, [query, category, sort, priceRange.min, priceRange.max, inStock, onSale, setParams]);
   
   // Toggle mobile filters
   const toggleMobileFilters = () => {
@@ -83,7 +88,7 @@ export default function ProductsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{getPageTitle()}</h1>
         <div className="flex items-center text-gray-600">
-          {query && <span className="mr-2">Showing search results for "{query}"</span>}
+          {query && <span className="mr-2">Showing search results for &quot;{query}&quot;</span>}
           
           {/* Show active filters */}
           <div className="flex flex-wrap gap-2">
@@ -244,7 +249,7 @@ export default function ProductsPage() {
                 <div className="text-center py-12 bg-gray-50 rounded-lg">
                   <h2 className="text-xl font-semibold mb-4">No Products Found</h2>
                   <p className="text-gray-600 mb-6">
-                    We couldn't find any products matching your criteria. Try adjusting your filters.
+                    We couldn&apos;t find any products matching your criteria. Try adjusting your filters.
                   </p>
                   <Link href="/products">
                     <Button variant="outline">View All Products</Button>
@@ -258,5 +263,79 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function ProductsPageLoading() {
+  return (
+    <div className="container mx-auto px-4">
+      <div className="animate-pulse">
+        {/* Header skeleton */}
+        <div className="mb-8">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
+          <div className="h-5 bg-gray-200 rounded w-1/4"></div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Filters skeleton - Desktop */}
+          <div className="md:w-64 flex-shrink-0 hidden md:block">
+            <div className="space-y-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i}>
+                  <div className="h-5 bg-gray-200 rounded w-1/2 mb-3"></div>
+                  <div className="space-y-2">
+                    {Array.from({ length: 3 }).map((_, j) => (
+                      <div key={j} className="flex items-center">
+                        <div className="w-4 h-4 bg-gray-200 rounded mr-2"></div>
+                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Products skeleton */}
+          <div className="flex-grow">
+            {/* Mobile controls skeleton */}
+            <div className="flex justify-between mb-6 md:hidden">
+              <div className="h-10 bg-gray-200 rounded w-20"></div>
+              <div className="h-10 bg-gray-200 rounded w-32"></div>
+            </div>
+            
+            {/* Desktop controls skeleton */}
+            <div className="hidden md:flex justify-between items-center mb-6">
+              <div className="h-5 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-8 bg-gray-200 rounded w-32"></div>
+            </div>
+
+            {/* Product grid skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="border rounded-lg overflow-hidden">
+                  <div className="aspect-square bg-gray-200"></div>
+                  <div className="p-4">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+                    <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense wrapper
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsPageLoading />}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }

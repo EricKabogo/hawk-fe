@@ -1,7 +1,6 @@
-// src/app/search/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, ArrowRight } from 'lucide-react';
@@ -10,7 +9,8 @@ import { Product } from '@/types/product';
 import ProductGrid from '@/components/product/ProductGrid';
 import Button from '@/components/ui/Button';
 
-export default function SearchPage() {
+// Separate component that uses useSearchParams
+function SearchPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get('q') || '';
@@ -136,7 +136,7 @@ export default function SearchPage() {
       
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-2">
-          Search results for "{query}"
+          Search results for &quot;{query}&quot;
         </h1>
         <p className="text-gray-600">
           {searchResults.length} products found
@@ -160,7 +160,7 @@ export default function SearchPage() {
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <h2 className="text-xl font-semibold mb-4">No Results Found</h2>
           <p className="text-gray-600 mb-6">
-            We couldn't find any products matching "{query}".
+            We couldn&apos;t find any products matching &quot;{query}&quot;.
           </p>
           
           {searchSuggestions.length > 0 && (
@@ -187,5 +187,53 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Loading fallback component
+function SearchPageLoading() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="animate-pulse">
+        {/* Search bar skeleton */}
+        <div className="mb-8">
+          <div className="flex items-center w-full max-w-lg mx-auto">
+            <div className="relative w-full">
+              <div className="w-full h-12 bg-gray-200 rounded-md"></div>
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Title skeleton */}
+        <div className="mb-6">
+          <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
+          <div className="h-5 bg-gray-200 rounded w-1/4"></div>
+        </div>
+        
+        {/* Content skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="border rounded-lg overflow-hidden">
+              <div className="aspect-square bg-gray-200"></div>
+              <div className="p-4">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+                <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense wrapper
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<SearchPageLoading />}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

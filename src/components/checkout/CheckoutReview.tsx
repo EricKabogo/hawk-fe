@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useCart } from '@/context/cart-context';
 import { useCheckout, shippingMethods } from '@/context/checkout-context';
 import { useToast } from '@/context/toast-context';
@@ -41,6 +40,7 @@ export default function CheckoutReview() {
       router.push(`/order/confirmation?id=${orderId}`);
     } catch (error) {
       showToast('Failed to place order. Please try again.', 'error');
+      console.error('Failed to place order:', error);
       setIsSubmitting(false);
     }
   };

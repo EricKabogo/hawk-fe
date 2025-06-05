@@ -34,6 +34,7 @@ export default function RegisterPage() {
       router.push('/account');
     } catch (err) {
       setError('Registration failed. Please try again.');
+      console.error('Registration error:', err);
     }
   };
 

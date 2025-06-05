@@ -1,4 +1,3 @@
-// src/components/common/SkipLink.tsx
 'use client';
 
 import { useState } from 'react';

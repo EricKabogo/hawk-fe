@@ -27,6 +27,7 @@ export default function LoginPage() {
       router.push('/account');
     } catch (err) {
       setError('Invalid email or password');
+      console.error('Login error:', err);
     }
   };
 
@@ -84,7 +85,7 @@ export default function LoginPage() {
           Forgot your password?
         </Link>
         <p className="mt-4">
-          Don't have an account?{' '}
+          Don&apos;t have an account? {' '}
           <Link href="/register" className="text-primary hover:underline">
             Sign up
           </Link>

@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/context/cart-context';
@@ -10,7 +9,7 @@ import { formatPrice } from '@/lib/utils';
 import ProductGrid from '@/components/product/ProductGrid';
 import Button from '@/components/ui/Button';
 import ProductRecommendations from '@/components/product/ProductRecommendations';
-import { Product } from '@/types/product';
+import { Product, ProductVariant } from '@/types/product';
 import { mockProducts } from '@/mock/products';
 
 export default function ProductPage() {
@@ -20,13 +19,13 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState('description');
   const { addItem } = useCart();
   
-  // Instead of using the non-existent useProduct hook, let's use mockProducts directly
+  // Product state management
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState<Error | null>(null);
   
-  // Load product data on component mount
-  useState(() => {
+  // Load product data on component mount - Fixed: use useEffect instead of useState
+  useEffect(() => {
     const fetchProduct = async () => {
       setIsLoading(true);
       try {
@@ -39,15 +38,15 @@ export default function ProductPage() {
         } else {
           throw new Error('Product not found');
         }
-      } catch (error) {
-        setError(error instanceof Error ? error : new Error('An unknown error occurred'));
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('An unknown error occurred'));
       } finally {
         setIsLoading(false);
       }
     };
     
     fetchProduct();
-  });
+  }, [params.id]);
   
   // Fetch related products
   const { products: relatedProducts } = useProducts({
@@ -194,7 +193,7 @@ export default function ProductPage() {
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-2">Colors</h3>
               <div className="flex space-x-3">
-                {product.variants.map((variant: any) => (
+                {product.variants.map((variant: ProductVariant) => (
                   <button
                     key={variant.id}
                     className={`px-3 py-1 border rounded-md text-sm ${
@@ -204,7 +203,7 @@ export default function ProductPage() {
                     }`}
                     disabled={!variant.inStock}
                   >
-                    {variant.attributes.color}
+                    {variant.attributes?.color || 'Color'}
                     {!variant.inStock && ' (Out of Stock)'}
                   </button>
                 ))}
@@ -368,9 +367,9 @@ export default function ProductPage() {
 
       {/* Recently Viewed Products */}
       <div className="border-t pt-12 mt-12">
-        <ProductRecommendations 
-          title="Recently Viewed" 
-          type="recently-viewed" 
+        <ProductRecommendations
+          title="Recently Viewed"
+          type="recently-viewed"
           currentProductId={product.id}
           limit={4}
         />

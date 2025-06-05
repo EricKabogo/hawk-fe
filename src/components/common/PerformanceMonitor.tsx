@@ -1,7 +1,12 @@
-// src/components/common/PerformanceMonitor.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
+
+// Define interfaces for performance entries that aren't fully typed in TypeScript
+interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput: boolean;
+  value: number;
+}
 
 export default function PerformanceMonitor() {
   const [metrics, setMetrics] = useState({
@@ -47,16 +52,17 @@ export default function PerformanceMonitor() {
         clsObserver = new PerformanceObserver((entryList) => {
           let clsValue = 0;
           for (const entry of entryList.getEntries()) {
-            if (!(entry as any).hadRecentInput) {
-              clsValue += (entry as any).value;
+            const layoutShiftEntry = entry as LayoutShiftEntry;
+            if (!layoutShiftEntry.hadRecentInput) {
+              clsValue += layoutShiftEntry.value;
             }
           }
           setMetrics(prev => ({ ...prev, cls: clsValue }));
         });
         
         clsObserver.observe({ type: 'layout-shift', buffered: true });
-      } catch (e) {
-        console.error('Performance metrics error:', e);
+      } catch (error) {
+        console.error('Performance metrics error:', error);
       }
     }
     

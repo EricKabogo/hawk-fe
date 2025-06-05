@@ -103,7 +103,7 @@ const ProductSearch = () => {
             </div>
           ) : (
             <div className="p-4 text-center text-gray-500">
-              No products found matching "{searchTerm}"
+              No products found matching &quot;{searchTerm}&quot;
             </div>
           )}
         </div>

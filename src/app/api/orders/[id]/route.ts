@@ -170,10 +170,13 @@ const mockOrders: Order[] = [
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  // Await the params since they're now a Promise
+  const { id } = await context.params;
+  
   // Find the order by ID
-  const order = mockOrders.find(o => o.id === params.id);
+  const order = mockOrders.find(o => o.id === id);
   
   if (!order) {
     return NextResponse.json(

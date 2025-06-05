@@ -1,9 +1,8 @@
-// src/app/categories/[slug]/page.tsx
 import { redirect } from 'next/navigation';
 import { notFound } from 'next/navigation';
 
 interface CategoryPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Map of valid category slugs
@@ -14,8 +13,9 @@ const validCategories = [
   'accessories'
 ];
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const { slug } = params;
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  // Await the params since they're now a Promise
+  const { slug } = await params;
   
   // Check if this is a valid category
   if (!validCategories.includes(slug)) {

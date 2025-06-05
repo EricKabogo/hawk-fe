@@ -71,7 +71,7 @@ export default function OrdersPage() {
       ) : orders.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <h2 className="text-xl font-semibold mb-4">No Orders Yet</h2>
-          <p className="text-gray-600 mb-6">You haven't placed any orders yet.</p>
+          <p className="text-gray-600 mb-6">You haven&apos;t placed any orders yet.</p>
           <Link href="/products">
             <Button>Start Shopping</Button>
           </Link>

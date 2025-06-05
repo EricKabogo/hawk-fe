@@ -57,6 +57,7 @@ export default function AddressesPage() {
       setAddresses(addresses.filter(addr => addr.id !== id));
       showToast('Address deleted successfully', 'success');
     } catch (error) {
+      console.error('Error deleting address:', error);
       showToast('Failed to delete address', 'error');
     }
   };
@@ -73,6 +74,7 @@ export default function AddressesPage() {
       })));
       showToast('Default address updated', 'success');
     } catch (error) {
+      console.error('Error setting default address:', error);
       showToast('Failed to update default address', 'error');
     }
   };

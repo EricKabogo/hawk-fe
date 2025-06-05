@@ -45,6 +45,7 @@ export default function SettingsPage() {
       showToast('Profile updated successfully', 'success');
     } catch (error) {
       setGeneralError('Failed to update profile');
+      console.error('Failed to update profile:', error);
     } finally {
       setIsGeneralSubmitting(false);
     }
@@ -84,6 +85,7 @@ export default function SettingsPage() {
       showToast('Password updated successfully', 'success');
     } catch (error) {
       setPasswordError('Failed to update password');
+      console.error('Failed to update password:', error);
     } finally {
       setIsPasswordSubmitting(false);
     }

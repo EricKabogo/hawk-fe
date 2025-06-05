@@ -46,6 +46,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
+    // In a real implementation, you would validate the password here
+    console.log('Login attempt with email:', email, 'password length:', password.length);
+    
     // Mock successful login
     const newUser = {
       id: '1',
@@ -65,6 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // In a real implementation, you would validate and hash the password here
+    console.log('Registration attempt with email:', email, 'password length:', password.length);
     
     // Mock successful registration
     const newUser = {

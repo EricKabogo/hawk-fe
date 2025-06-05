@@ -3,9 +3,12 @@ import { mockProducts } from '@/mock/products';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const product = mockProducts.find(p => p.id === params.id);
+  // Await the params since they're now a Promise
+  const { id } = await context.params;
+  
+  const product = mockProducts.find(p => p.id === id);
   
   if (!product) {
     return NextResponse.json(

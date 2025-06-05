@@ -1,4 +1,3 @@
-// src/components/home/FeaturedCategories.tsx
 import Link from 'next/link';
 import { Smartphone, ShoppingBag, Home, Watch, Gift } from 'lucide-react';
 
