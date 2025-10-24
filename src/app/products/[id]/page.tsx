@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/context/cart-context';
 import { formatPrice } from '@/lib/utils';
@@ -11,12 +12,14 @@ import Button from '@/components/ui/Button';
 import ProductRecommendations from '@/components/product/ProductRecommendations';
 import { Product, ProductVariant } from '@/types/product';
 import { mockProducts } from '@/mock/products';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  const [selectedImage, setSelectedImage] = useState(0);
   const { addItem } = useCart();
   
   // Product state management
@@ -127,19 +130,37 @@ export default function ProductPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         {/* Product Images */}
         <div className="space-y-4">
-          <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-            <span className="text-gray-500">Product Image</span>
+          <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+            <OptimizedImage
+              src={product.images[selectedImage] || product.thumbnail}
+              alt={product.name}
+              width={600}
+              height={600}
+              className="w-full h-full"
+              objectFit="contain"
+              priority
+            />
           </div>
-          
+
           {/* Thumbnail Gallery */}
           {product.images.length > 1 && (
             <div className="grid grid-cols-4 gap-4">
               {product.images.map((image: string, index: number) => (
-                <button 
-                  key={index} 
-                  className="aspect-square bg-gray-100 rounded-md flex items-center justify-center hover:ring-2 hover:ring-[#0f766e]"
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={`aspect-square bg-gray-50 rounded-md overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-[#0f766e] ${
+                    selectedImage === index ? 'ring-2 ring-[#0f766e]' : ''
+                  }`}
                 >
-                  <span className="text-xs text-gray-500">Image {index + 1}</span>
+                  <OptimizedImage
+                    src={image}
+                    alt={`${product.name} - Image ${index + 1}`}
+                    width={150}
+                    height={150}
+                    className="w-full h-full"
+                    objectFit="contain"
+                  />
                 </button>
               ))}
             </div>
@@ -294,17 +315,6 @@ export default function ProductPage() {
           {activeTab === 'description' && (
             <div className="prose max-w-none">
               <p>{product.description}</p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, 
-                nisl nec ultricies lacinia, nisl nisl aliquam nisl, nec ultricies 
-                nisl nisl nec nisl. Sed euismod, nisl nec ultricies lacinia, nisl nisl 
-                aliquam nisl, nec ultricies nisl nisl nec nisl.
-              </p>
-              <p>
-                Sed euismod, nisl nec ultricies lacinia, nisl nisl aliquam nisl, nec 
-                ultricies nisl nisl nec nisl. Sed euismod, nec ultricies lacinia, 
-                nisl nisl aliquam nisl, nec ultricies nisl nisl nec nisl.
-              </p>
             </div>
           )}
           
