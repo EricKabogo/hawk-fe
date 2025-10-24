@@ -44,13 +44,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
         className="block relative flex-shrink-0"
         aria-label={`View ${product.name} details`}
       >
-        <div className="h-64 w-full overflow-hidden">
+        <div className="h-64 w-full overflow-hidden bg-gray-50 flex items-center justify-center">
           <OptimizedImage
             src={product.thumbnail || '/images/placeholder.jpg'}
             alt={product.name}
             width={400}
             height={300}
             className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+            objectFit="contain"
           />
           
           {/* Sale badge */}

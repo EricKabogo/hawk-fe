@@ -36,11 +36,11 @@ export default function OptimizedImage({
   };
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ aspectRatio: `${width}/${height}` }}>
+    <div className={`relative overflow-hidden flex items-center justify-center ${className}`} style={{ aspectRatio: `${width}/${height}` }}>
       {isLoading && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse" />
       )}
-      
+
       {error ? (
         <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
           <span className="text-gray-400 text-sm">Image not available</span>
@@ -53,7 +53,8 @@ export default function OptimizedImage({
           height={height}
           className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           style={{
-            objectFit
+            objectFit,
+            objectPosition: 'center'
           }}
           priority={priority}
           onLoadingComplete={handleLoadingComplete}
