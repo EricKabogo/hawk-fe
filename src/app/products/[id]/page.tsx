@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/context/cart-context';
 import { formatPrice } from '@/lib/utils';
