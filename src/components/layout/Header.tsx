@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
 import EnhancedSearchBar from '@/components/product/EnhancedSearchBar';
@@ -28,8 +29,15 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="font-bold text-2xl text-[#0f766e]">
-            Hawk Life Solutions
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logo.jpeg"
+              alt="Hawk Life Solutions"
+              width={150}
+              height={50}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
