@@ -19,17 +19,27 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-32">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/img-1.jpeg"
+            alt="Hero background"
+            className="w-full h-full object-cover opacity-40"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative container mx-auto px-4 py-32">
           <div className="max-w-xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Discover Quality Products for Every Need
             </h1>
             <p className="text-xl mb-8">
-              Shop our wide selection of premium products at competitive prices. 
+              Shop our wide selection of premium products at competitive prices.
               From electronics to home goods, we have everything you need.
             </p>
-            <Link 
-              href="/products" 
+            <Link
+              href="/products"
               className="bg-[#0f766e] hover:bg-[#0e6a62] text-white font-medium px-6 py-3 rounded-md transition-colors inline-block"
             >
               Shop Now
